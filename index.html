@@ -35,6 +35,7 @@ function Frankie() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [questionCount, setQuestionCount] = useState(0);
+  const [usedPrompts, setUsedPrompts] = useState([]);
   const scrollRef = useRef(null);
   useEffect(() => {
     if (scrollRef.current) {
@@ -69,6 +70,9 @@ function Frankie() {
     if (!trimmed || loading) return;
     if (questionCount >= MAX_QUESTIONS) return;
     const nextCount = questionCount + 1;
+    if (SUGGESTED_PROMPTS.includes(trimmed)) {
+      setUsedPrompts(prev => prev.includes(trimmed) ? prev : [...prev, trimmed]);
+    }
     const newMessages = [...messages, {
       role: "user",
       content: trimmed
@@ -287,30 +291,34 @@ function Frankie() {
     style: {
       animationDelay: "0.4s"
     }
-  }, "●")), messages.length === 1 && stage === "chat" && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-      marginTop: 4
-    }
-  }, SUGGESTED_PROMPTS.map(p => /*#__PURE__*/React.createElement("button", {
-    key: p,
-    className: "frankie-suggest frankie-btn",
-    onClick: () => sendMessage(p),
-    style: {
-      textAlign: "left",
-      background: "transparent",
-      border: "1px solid #2A3543",
-      color: "#97A3B0",
-      borderRadius: 8,
-      padding: "9px 12px",
-      fontSize: 13,
-      cursor: "pointer",
-      fontFamily: "'Inter', sans-serif",
-      transition: "border-color 0.15s, color 0.15s"
-    }
-  }, p))), stage === "closed" && /*#__PURE__*/React.createElement("div", {
+  }, "●")), (() => {
+    const remaining = SUGGESTED_PROMPTS.filter(p => !usedPrompts.includes(p));
+    if (stage !== "chat" || loading || remaining.length === 0) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        marginTop: 4
+      }
+    }, remaining.map(p => /*#__PURE__*/React.createElement("button", {
+      key: p,
+      className: "frankie-suggest frankie-btn",
+      onClick: () => sendMessage(p),
+      style: {
+        textAlign: "left",
+        background: "transparent",
+        border: "1px solid #2A3543",
+        color: "#97A3B0",
+        borderRadius: 8,
+        padding: "9px 12px",
+        fontSize: 13,
+        cursor: "pointer",
+        fontFamily: "'Inter', sans-serif",
+        transition: "border-color 0.15s, color 0.15s"
+      }
+    }, p)));
+  })(), stage === "closed" && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: 8,
       display: "flex",
