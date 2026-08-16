@@ -181,7 +181,7 @@ function Frankie() {
         lineHeight: 1.6,
         marginTop: 0
       }
-    }, "Hello! I'm Frankie, Franklin's digital AI twin, here to answer questions about his experience. I'll try not to be biased, but as an AI, I can't make any promises. To begin, please enter your email address."), /*#__PURE__*/React.createElement("input", {
+    }, "Chat with Frankie, Franklin's digital AI twin, to learn about his background in real time. Enter your email to get started."), /*#__PURE__*/React.createElement("input", {
       className: "frankie-input",
       type: "email",
       placeholder: "you@company.com",
@@ -301,7 +301,16 @@ function Frankie() {
         gap: 8,
         marginTop: 4
       }
-    }, remaining.map(p => /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontFamily: "'Inter', sans-serif",
+        fontSize: 11,
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+        color: "#5C6673",
+        margin: "2px 0 2px"
+      }
+    }, "Try one of these, or type your own question below"), remaining.map(p => /*#__PURE__*/React.createElement("button", {
       key: p,
       className: "frankie-suggest frankie-btn",
       onClick: () => sendMessage(p),
